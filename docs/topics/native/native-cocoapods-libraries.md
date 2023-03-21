@@ -51,11 +51,11 @@ version of the library, you can just omit this parameter altogether.
 
 3. Re-import the project.
 
-To use these dependencies from the Kotlin code, import the packages `cocoapods.<library-name>`.
-
-```kotlin
-import cocoapods.AFNetworking.*
-```
+   To use these dependencies from the Kotlin code, import the packages `cocoapods.<library-name>`.
+   
+   ```kotlin
+   import cocoapods.AFNetworking.*
+   ```
 
 ## On a locally stored library
 
@@ -103,13 +103,13 @@ import cocoapods.AFNetworking.*
 
 3. Re-import the project.
 
-To use these dependencies from the Kotlin code, import the packages `cocoapods.<library-name>`.
-
-```kotlin
-import cocoapods.pod_dependency.*
-import cocoapods.subspec_dependency.*
-import cocoapods.AFNetworking.*
-```
+   To use these dependencies from the Kotlin code, import the packages `cocoapods.<library-name>`.
+   
+   ```kotlin
+   import cocoapods.pod_dependency.*
+   import cocoapods.subspec_dependency.*
+   import cocoapods.AFNetworking.*
+   ```
 
 ## From a custom Git repository
 
@@ -164,25 +164,25 @@ import cocoapods.AFNetworking.*
 
 3. Re-import the project.
 
-> To work correctly with Xcode, you should specify the path to the Podspec in your Podfile.
-> For example:
->
-> ```ruby
-> target 'ios-app' do
->     # ... other pod dependencies ...
->     pod 'JSONModel', :path => '../cocoapods/kmm-with-cocoapods-sample/kotlin-library/build/cocoapods/externalSources/git/JSONModel'
-> end
-> ```
->
-{type="note"}
-
-To use these dependencies from the Kotlin code, import the packages `cocoapods.<library-name>`.
-
-```kotlin
-import cocoapods.AFNetworking.*
-import cocoapods.JSONModel.*
-import cocoapods.CocoaLumberjack.*
-```
+   > To work correctly with Xcode, you should specify the path to the Podspec in your Podfile.
+   > For example:
+   >
+   > ```ruby
+   > target 'ios-app' do
+   >     # ... other pod dependencies ...
+   >     pod 'JSONModel', :path => '../cocoapods/kmm-with-cocoapods-sample/kotlin-library/build/cocoapods/externalSources/git/JSONModel'
+   > end
+   > ```
+   >
+   {type="note"}
+   
+   To use these dependencies from the Kotlin code, import the packages `cocoapods.<library-name>`.
+   
+   ```kotlin
+   import cocoapods.AFNetworking.*
+   import cocoapods.JSONModel.*
+   import cocoapods.CocoaLumberjack.*
+   ```
 
 ## From a custom Podspec repository
 
@@ -212,29 +212,29 @@ import cocoapods.CocoaLumberjack.*
 
 4. Re-import the project.
 
-> To work correctly with Xcode, you should specify the location of specs at the beginning of your Podfile.
-> For example,
-> ```ruby
-> source 'https://github.com/Kotlin/kotlin-cocoapods-spec.git'
-> ```
->
-> You should also specify the path to the Podspec in your Podfile.
-> For example:
->
-> ```ruby
-> target 'ios-app' do
->     # ... other pod dependencies ...
->     pod 'podspecWithFilesExample', :path => '../cocoapods/kmm-with-cocoapods-sample/pod_dependency'
-> end
-> ```
->
-{type="note"}
-
-To use these dependencies from the Kotlin code, import the packages `cocoapods.<library-name>`.
-
-```kotlin
-import cocoapods.example.*
-```
+   > To work correctly with Xcode, you should specify the location of specs at the beginning of your Podfile.
+   > For example,
+   > ```ruby
+   > source 'https://github.com/Kotlin/kotlin-cocoapods-spec.git'
+   > ```
+   >
+   > You should also specify the path to the Podspec in your Podfile.
+   > For example:
+   >
+   > ```ruby
+   > target 'ios-app' do
+   >     # ... other pod dependencies ...
+   >     pod 'podspecWithFilesExample', :path => '../cocoapods/kmm-with-cocoapods-sample/pod_dependency'
+   > end
+   > ```
+   >
+   {type="note"}
+   
+   To use these dependencies from the Kotlin code, import the packages `cocoapods.<library-name>`.
+   
+   ```kotlin
+   import cocoapods.example.*
+   ```
 
 ## With custom cinterop options
 
@@ -242,10 +242,8 @@ import cocoapods.example.*
 
    In the configuration block, specify the cinterop options:
 
-   * `extraOpts` – to specify the list of options for a Pod library, for example, a `-compiler-option` with specific flags.
-     
-     You can use `extraOpts = listOf("-compiler-option", "-fmodules")` here to consume Objective-C headers with `@import`
-     directives.
+   *  `extraOpts` – to specify the list of options for a Pod library. For example, specific flags: `extraOpts = listOf("-compiler-option")`.
+      directives.
    * `packageName` – to specify the package name. If you specify this, you can import the library using the package name:
      `import <packageName>`.
 
@@ -262,7 +260,6 @@ import cocoapods.example.*
             ios.deploymentTarget = "13.5"
 
             pod("YandexMapKit") {
-                extraOpts = listOf("-compiler-option", "-fmodules")
                 packageName = "YandexMK"
             }
         }
@@ -271,15 +268,45 @@ import cocoapods.example.*
 
 3. Re-import the project.
 
-To use these dependencies from the Kotlin code, import the packages `cocoapods.<library-name>`.
+   * To use these dependencies from the Kotlin code, import the packages `cocoapods.<library-name>`.
+   
+     ```kotlin
+     import cocoapods.YandexMapKit.*
+     ```
+   
+   * If you use the `packageName` parameter, you can import the library using the package name `import <packageName>`:
+   
+     ```kotlin
+     import YandexMK.YMKPoint
+     import YandexMK.YMKDistance
+     ```
+
+### Support for Objective-C headers with @import directives
+
+> This feature is [Experimental](components-stability.md#stability-levels-explained).
+> It may be dropped or changed at any time. Use it only for evaluation purposes.
+> We'd appreciate your feedback on it in [YouTrack](https://kotl.in/issue).
+>
+{type="warning"}
+
+One of the cinterop options you can use when adding a dependency on a Pod library is importing Objective-C headers
+with `@import` directives. It could be useful for classes of CocoaPods dependencies written in Swift.
+
+To do that, specify the `-fmodules` option in the configuration block of the `pod()` function:
 
 ```kotlin
-import cocoapods.YandexMapKit.*
-```
+kotlin {
+    ios()
 
-If you use the `packageName` parameter, you can import the library using the package name `import <packageName>`:
+    cocoapods {
+        summary = "CocoaPods test library"
+        homepage = "https://github.com/JetBrains/kotlin"
 
-```kotlin
-import YandexMK.YMKPoint
-import YandexMK.YMKDistance
+        ios.deploymentTarget = "13.5"
+
+        pod("PodName") {
+            extraOpts = listOf("-compiler-option", "-fmodules")
+        }
+    }
+}
 ```
